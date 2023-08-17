@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simple-curler
+spec:
+  serviceAccountName: pod-curler
+  containers:
+  - name: curl-container
+    image: curlimages/curl:latest
+    command: ["/bin/sh", "-c"]
+    args:
+    - >
+      
+      curl -sSk -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
+      https://kubernetes.default.svc.cluster.local/api/v1/namespaces/default/pods/
+      
+  restartPolicy: Never
